@@ -18,7 +18,7 @@ VPTAA Authorization is a secure OTP (One-Time Password) verification system desi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/vptaa-authorization.git
+   git clone https://github.com/vatsalr26/Cyber-Security.git
    cd vptaa-authorization
 2. Create a virutal environment:
     python3 -m venv venv
