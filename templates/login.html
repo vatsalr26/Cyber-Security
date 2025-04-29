@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="static/index_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header-box">
+            <h1>Login Page</h1>
+        </div>
+        <form action="{{ url_for('send_otp_route') }}" method="post">
+            <input type="email" name="email" placeholder="Enter your email" required />
+            <button type="submit">Send OTP</button>
+        </form>
+    </div>
+
+    <section class="info-section">
+        <div class="fact-box">
+            <h3>Did You Know?</h3>
+            <p>The first email was sent in 1971 by Ray Tomlinson, who is credited with inventing email.</p>
+        </div>
+        <div class="fact-box">
+            <h3>Importance of Login</h3>
+            <p>Login systems are the first line of defense for protecting your personal and sensitive information online.</p>
+        </div>
+        <div class="fact-box">
+            <h3>Authorization vs Authentication</h3>
+            <p>Authentication verifies who you are, while authorization determines what you can access.</p>
+        </div>
+        <div class="fact-box">
+            <h3>Fun Fact About Passwords</h3>
+            <p>The most common password in the world is still "123456". Always use strong, unique passwords!</p>
+        </div>
+        <div class="fact-box">
+            <h3>Emails Sent Daily</h3>
+            <p>Over 300 billion emails are sent every day worldwide. That’s more than 3.5 million emails per second!</p>
+        </div>
+        <div class="fact-box">
+          <h3>Two-Factor Authentication</h3>
+          <p>Two-factor authentication (2FA) adds an extra layer of security by requiring not only a password but also a second factor, like an OTP or biometric verification.</p>
+      </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!-- filepath: /Users/vatsalrukhaiyar/Desktop/LUT/CYBER-SECURITY/Project/Another/templates/verify.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="static/verify_styles.css">
+  </head>
+  <body>
+    <h2>Enter OTP sent to your email</h2>
+    <p class="spam-reminder">If you don’t see the email, remember to check your spam folder.</p>
+    {% if error %}
+      <p style="color:red;">{{ error }}</p> <!-- Display error message -->
+    {% endif %}
+    <form action="/verify_code" method="post">
+      <input type="text" name="otp" required />
+      <button type="submit">Verify</button>
+    </form>
+
+    <section class="info-section">
+      <div class="fact-box">
+        <h3>What is an OTP?</h3>
+        <p>An OTP (One-Time Password) is a unique, time-sensitive code sent to your email or phone. It is used to verify your identity and ensure secure access to your account.</p>
+      </div>
+      <div class="fact-box">
+        <h3>How Does OTP Work?</h3>
+        <p>When you request an OTP, a random code is generated and sent to your registered email or phone. You must enter this code within a limited time to complete the verification process.</p>
+      </div>
+      <div class="fact-box">
+        <h3>Why Use Two-Factor Authentication (2FA)?</h3>
+        <p>Two-factor authentication (2FA) adds an extra layer of security to your account. It combines something you know (your password) with something you have (an OTP) to verify your identity.</p>
+      </div>
+      <div class="fact-box">
+        <h3>Benefits of 2FA</h3>
+        <p>Prevents unauthorized access, protects sensitive information, reduces phishing risks, and enhances overall account security.</p>
+      </div>
+      <div class="fact-box">
+        <h3>Interesting Facts About OTP</h3>
+        <p>OTP codes are typically valid for only 5-10 minutes to prevent misuse. They are widely used in banking, email services, and social media platforms.</p>
+      </div>
+      <div class="fact-box">
+        <h3>Tips for Using 2FA</h3>
+        <p>Always enable 2FA on accounts that support it. Use a secure email address, never share your OTP, and consider using authenticator apps for added security.</p>
+      </div>
+    </section>
+  </body>
+</html>
