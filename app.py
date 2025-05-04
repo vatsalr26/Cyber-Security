@@ -1,17 +1,20 @@
-from flask import Flask, request, render_template, redirect, url_for, session, flash, jsonify
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 import random, smtplib, ssl, time
 from email.mime.text import MIMEText
+from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'cybersecurity'  # secret key for session management
+app.secret_key = 'cybersecurity'  # Secret key for session management
 
-otp_db = {}  # store otp data
+otp_db = {}  # Store OTP data
 
+# Email configuration
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 EMAIL_SENDER = 'vptaa.authorize@gmail.com'
 EMAIL_PASSWORD = 'wskh volh ttsd lyhu'
 
+# Send OTP via email
 def send_otp(email, otp):
     msg = MIMEText(f"""
     Dear User,
@@ -37,6 +40,17 @@ def send_otp(email, otp):
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         server.send_message(msg)
 
+# Decorator to restrict access
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('authenticated'):
+            flash("Unauthorized access. Please log in.")
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Routes
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -47,7 +61,7 @@ def send_otp_route():
     if not email:
         flash('Email field is required.')
         return redirect(url_for('index'))
-    
+
     otp = str(random.randint(100000, 999999))
     otp_db[email] = (otp, time.time())
     send_otp(email, otp)
@@ -66,16 +80,22 @@ def verify_code():
         return redirect(url_for('index'))
 
     real_otp, timestamp = otp_db[email]
-    if time.time() - timestamp > 300:  # otp expires in 5 minutes
+    if time.time() - timestamp > 300:  # 5-minute expiration
         return render_template('expired.html')
 
     if entered_otp == real_otp:
+        session['authenticated'] = True
+        session['secret_access'] = True  # Allow access to /secret only once
         return redirect(url_for('secret'))
     else:
-        return render_template('verify.html', error="Wrong OTP")  # Pass error message
+        return render_template('verify.html', error="Wrong OTP")
 
 @app.route('/secret')
+@login_required
 def secret():
+    if not session.pop('secret_access', None):  # One-time access
+        flash("Access expired or already used.")
+        return redirect(url_for('index'))
     return render_template('secret.html')
 
 @app.route('/resend_otp', methods=['POST'])
@@ -91,8 +111,8 @@ def resend_otp():
 
 @app.route('/logout', methods=['GET'])
 def logout():
-    session.clear()  # clear session data
-    return render_template('login.html')  # return to login page
+    session.clear()
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
